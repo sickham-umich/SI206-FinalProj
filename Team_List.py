@@ -5,7 +5,7 @@ import os
 
 def get_team_names():
 
-    urls = ['https://www.ncaa.com/stats/football/fbs/current/team/461', 'https://www.ncaa.com/stats/football/fbs/current/team/461/p2', 'https://www.ncaa.com/stats/football/fbs/current/team/461/p3']
+    urls = ['https://www.ncaa.com/stats/football/fbs/current/team/29', 'https://www.ncaa.com/stats/football/fbs/current/team/29/p2', 'https://www.ncaa.com/stats/football/fbs/current/team/29/p3']
     
     teams = []
     for url in urls:

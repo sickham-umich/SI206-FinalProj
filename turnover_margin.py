@@ -13,15 +13,7 @@ def get_turnover_margin(cur, conn):
 
     urls = ['https://www.ncaa.com/stats/football/fbs/current/team/29', 'https://www.ncaa.com/stats/football/fbs/current/team/29/p2', 'https://www.ncaa.com/stats/football/fbs/current/team/29/p3']
     
-    cur.execute('CREATE TABLE IF NOT EXISTS team_turnovers (school_id INTEGER PRIMARY KEY, turnover_margin)')
-    cur.execute('SELECT school_id from team_turnovers')
-
-    # Checking team ids in db and creating list
-    data = cur.fetchall()
-    keep_track_ids = []
-    for d in data:
-        keep_track_ids.append(d[0])
-
+    cur.execute('CREATE TABLE IF NOT EXISTS team_turnovers (school_id INTEGER PRIMARY KEY, turnover_margin INTEGER)')
     
     teams = []
     turnover_margin = []
@@ -50,7 +42,6 @@ def get_turnover_margin(cur, conn):
 
             turnover_margin.append(lst[9])
 
-
     team_turnover = {}
     for i in range(len(teams)):
         team = teams[i]
@@ -60,7 +51,6 @@ def get_turnover_margin(cur, conn):
     return team_turnover
 
 def add_turnovers_to_db(cur, conn, dic):
-    
     
     i = 0
     for team in dic:

@@ -48,7 +48,7 @@ def add_teams_db(cur, conn, teams):
         cur.execute('INSERT INTO teams (team) VALUES (?)', (team,))
     conn.commit()
 
-    print(f'Added {len(teams)} teams to teams table in database')
+    print(f'Added {len(teams)} new teams to teams table in database')
     return None
 
 

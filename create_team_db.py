@@ -3,6 +3,8 @@ import requests
 import os
 import sqlite3
 
+"""Creates 'teams' table in database and adds 25 teams everytime code is run"""
+
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
@@ -46,7 +48,6 @@ def add_teams_db(cur, conn, teams):
     conn.commit()
 
     print(f'Added {len(teams)} new teams to teams table in database')
-    return None
 
 cur, conn = setUpDatabase('ncaa_football_stats.db')
 team_list = get_team_names(cur, conn)

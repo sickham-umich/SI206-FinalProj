@@ -3,6 +3,8 @@ import requests
 import os
 import sqlite3
 
+"""Creates 'win_loss' table in database and adds 25 rows everytime code is run"""
+
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
@@ -65,7 +67,6 @@ def add_wl_to_db(cur, conn, dic):
         except:
             print('Team already in database')
     conn.commit()
-    return None
 
 
 cur, conn = setUpDatabase('ncaa_football_stats.db')

@@ -2,6 +2,8 @@ import sqlite3
 import os
 import matplotlib.pyplot as plt
 
+"""Creates two scatter plots using data from database"""
+
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)

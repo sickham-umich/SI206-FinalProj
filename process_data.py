@@ -3,6 +3,7 @@ import csv
 import os
 import numpy as np
 
+"""Creates text document 'summary_data.txt' that summarizes some of the data """
 
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))

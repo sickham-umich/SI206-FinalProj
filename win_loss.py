@@ -1,7 +1,7 @@
+from bs4 import BeautifulSoup
+import requests
 import os
 import sqlite3
-import requests
-import json
 
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
@@ -9,61 +9,65 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
+def get_win_loss(cur, conn):
 
-def get_teams():
-
-    dir = os.path.dirname(__file__)
-    fullpath = os.path.join(dir, 'team_list.json')
-    f = open(fullpath, 'r')
-
+    urls = ['https://www.ncaa.com/stats/football/fbs/current/team/742', 'https://www.ncaa.com/stats/football/fbs/current/team/742/p2', 'https://www.ncaa.com/stats/football/fbs/current/team/742/p3']
+    
+    cur.execute('CREATE TABLE IF NOT EXISTS win_loss (school_id INTEGER PRIMARY KEY, w_percentage REAL)')
+    
     teams = []
-    lines = f.readlines()
-    for team in lines:
-        teams.append(team.strip())
+    wl = []
+    for url in urls:
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content, 'lxml')
 
-    return teams
+        # finding tags with schools
+        schools = soup.find_all('a', class_ = 'school')
 
+        # finding stats for schools
+        body = soup.find('tbody')
+        tags = body.find_all('tr')
 
-def get_data(cur, conn):
+        for tag in schools:
+            school = tag.text
 
-    url = 'https://api.collegefootballdata.com/records?year=2020'
-    resp = requests.get(url)
-    data = resp.json()
+            teams.append(school)
 
-    cur.execute('CREATE TABLE IF NOT EXISTS win_loss (school_id INTEGER PRIMARY KEY, win_percentage REAL)')
+        for tag in tags:
+            stats = tag.find_all('td')
+            lst = []
 
-    dic = {}
-    for d in data:
-        team = d['team']
-        if 'State' in team:
-            team = team[:-3] + '.'
-        dic[team] = round(d['total']['wins'] / d['total']['games'], 3)
+            for stat in stats:
+                lst.append(stat.text)
 
-    return dic
+            wl.append(lst[5])
 
+    wl_dic = {}
+    for i in range(len(teams)):
+        team = teams[i]
+        w = wl[i]
+        wl_dic[team] = w
+
+    return wl_dic
 
 def add_wl_to_db(cur, conn, dic):
+    
     i = 0
     for team in dic:
         if i == 25:
             break
+        cur.execute('SELECT id from teams WHERE team = ?', (team, ))
+        team_id = cur.fetchone()[0]
         try:
-            cur.execute('SELECT id from teams WHERE team = ?', (team, ))
-            team_id = cur.fetchone()[0]
-        except:
-            print('Team data not available')
-        try:
-            cur.execute('INSERT INTO win_loss (school_id, win_percentage) VALUES (?, ?)', (team_id, dic[team]))
+            cur.execute('INSERT INTO win_loss (school_id, w_percentage) VALUES (?, ?)', (team_id, dic[team]))
             i += 1
+            print('added team data to database')
         except:
-             print('Team already in database')
-
+            print('Team already in database')
     conn.commit()
     return None
 
+
 cur, conn = setUpDatabase('ncaa_football_stats.db')
-teams = get_teams()
-dic = get_data(cur, conn)
-add_wl_to_db(cur, conn, dic)
-
-
+wl_dic = get_win_loss(cur, conn)
+add_wl_to_db(cur, conn, wl_dic)

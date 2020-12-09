@@ -48,8 +48,7 @@ def add_wl_to_db(cur, conn, dic):
             cur.execute('SELECT id from teams WHERE team = ?', (team, ))
             team_id = cur.fetchone()[0]
         except:
-            print(f'{team} not in database')
-            #FIND OUT HOW TO ADD DIFFERENT TEAM NAMES TO DATABASE
+            None
         try:
             cur.execute('INSERT INTO win_loss (school_id, win_percentage) VALUES (?, ?)', (team_id, dic[team]))
             i += 1

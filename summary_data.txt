@@ -1,0 +1,7 @@
+The average correlation between a ncaa football team's red zone touchdown percentage and their win/loss ratio in 2020 is 0.4157.
+
+
+The average correlation between a ncaa football team's turnover margin and their win/loss ratio in 2020 is 0.5481.
+
+
+9 ncaa football teams have not lost a game in 2020. Their average redzone touchdown percentage is 0.8713. Their average turnover margin is 5.4444.

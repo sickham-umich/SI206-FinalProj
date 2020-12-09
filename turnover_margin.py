@@ -61,12 +61,11 @@ def add_turnovers_to_db(cur, conn, dic):
         try:
             cur.execute('INSERT INTO team_turnovers (school_id, turnover_margin) VALUES (?, ?)', (team_id, dic[team]))
             i += 1
+            print('added team data to database')
         except:
             print('Team already in database')
     conn.commit()
     return None
-
-
 
 
 cur, conn = setUpDatabase('ncaa_football_stats.db')

@@ -9,6 +9,7 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
+
 def get_teams():
 
     dir = os.path.dirname(__file__)
@@ -21,6 +22,7 @@ def get_teams():
         teams.append(team.strip())
 
     return teams
+
 
 def get_data(cur, conn):
 
@@ -39,6 +41,7 @@ def get_data(cur, conn):
 
     return dic
 
+
 def add_wl_to_db(cur, conn, dic):
     i = 0
     for team in dic:
@@ -48,19 +51,15 @@ def add_wl_to_db(cur, conn, dic):
             cur.execute('SELECT id from teams WHERE team = ?', (team, ))
             team_id = cur.fetchone()[0]
         except:
-            None
+            print('Team data not available')
         try:
             cur.execute('INSERT INTO win_loss (school_id, win_percentage) VALUES (?, ?)', (team_id, dic[team]))
             i += 1
         except:
-            print('Team already in database')
+             print('Team already in database')
+
     conn.commit()
     return None
-    
-    
-
-
-
 
 cur, conn = setUpDatabase('ncaa_football_stats.db')
 teams = get_teams()

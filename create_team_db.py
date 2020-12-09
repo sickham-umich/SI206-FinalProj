@@ -1,10 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
-import csv
 import os
 import sqlite3
-
-'''FINISHED THIS WITH ADDING 25 TEAMS EACH TIME TO TEAMS TABLE IN DB'''
 
 def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
@@ -50,10 +47,6 @@ def add_teams_db(cur, conn, teams):
 
     print(f'Added {len(teams)} new teams to teams table in database')
     return None
-
-
-
-
 
 cur, conn = setUpDatabase('ncaa_football_stats.db')
 team_list = get_team_names(cur, conn)

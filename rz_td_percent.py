@@ -9,6 +9,7 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
+
 def get_td_percentage(cur, conn):
 
     urls = ['https://www.ncaa.com/stats/football/fbs/current/team/703', 'https://www.ncaa.com/stats/football/fbs/current/team/703/p2', 'https://www.ncaa.com/stats/football/fbs/current/team/703/p3']
@@ -48,6 +49,7 @@ def get_td_percentage(cur, conn):
 
     return team_td
 
+
 def add_percents_to_db(cur, conn, dic):
     
     i = 0
@@ -59,6 +61,7 @@ def add_percents_to_db(cur, conn, dic):
         try:
             cur.execute('INSERT INTO rz_tds (school_id, rz_td_percent) VALUES (?, ?)', (team_id, dic[team]))
             i += 1
+            print('added team data to database')
         except:
             print('Team already in database')
     conn.commit()
